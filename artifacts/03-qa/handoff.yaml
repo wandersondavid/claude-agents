@@ -1,0 +1,50 @@
+from: qa-tester
+to: code-reviewer
+date: 2026-04-09
+summary: |
+  Fase 03-QA concluida. 72 testes automatizados escritos e passando para as 4 tasks QA:
+  TASK-006-QA (simulacao), TASK-009-QA (comparacao de transportadoras),
+  TASK-012-QA (historico localStorage), TASK-016-QA (schemas de tabela de preco).
+  Nenhum bug critico encontrado. Implementacao esta alinhada com os schemas Zod e a logica de negocio.
+
+deliverables:
+  - path: src/__tests__/api/simulate.test.ts
+    description: Testes unitarios da logica de calculo de frete e validacoes Zod do simulateRequestSchema (19 testes)
+  - path: src/__tests__/api/price-tables.test.ts
+    description: Testes dos schemas Zod priceTableCreateSchema, priceTableListQuerySchema e priceTableListResponseSchema (34 testes)
+  - path: src/__tests__/components/SimulationResults.test.tsx
+    description: Testes do componente SimulationResults (renderizacao, tags, ordenacao, cores, formatacao BRL) (11 testes)
+  - path: src/__tests__/components/SimulationHistory.test.tsx
+    description: Testes das funcoes localStorage (saveToHistory, loadHistory, clearHistory) e do componente SimulationHistory (8 testes)
+  - path: vitest.config.ts
+    description: Configuracao do Vitest com plugin React, jsdom e alias @/* para src/*
+  - path: src/__tests__/setup.ts
+    description: Setup global do Vitest importando @testing-library/jest-dom
+
+key_decisions:
+  - Testes de service (simulate-service.ts) foram escritos como testes de logica pura (sem mock do Prisma) pois o servico e simples o suficiente para testar os calculos isoladamente
+  - Testes de schema usam safeParse() diretamente — nenhuma chamada HTTP envolvida
+  - localStorage mockado via vi.stubGlobal para isolar os testes de historico do browser real
+
+assumptions:
+  - TASK-015-DEV (admin UI de tabelas de preco) ainda esta Pending; os testes de schema da TASK-016-QA cobrem a camada de validacao sem depender da UI
+
+open_items:
+  - TASK-015-DEV (tela admin) ainda nao implementada — quando concluida, adicionar testes E2E da UI de tabelas de preco
+  - TASK-017-ARCH e TASK-018-DEV (Swagger) ainda pendentes
+
+risks:
+  - description: Testes de componente dependem de texto literal do HTML (ex. "Mais barato", "Mais rapido"). Se os textos mudarem, os testes falham.
+    impact: Low
+    mitigation: Textos sao parte do contrato de UI — mudancas devem ser intencionais
+
+next_steps:
+  - code-reviewer deve revisar src/lib/services/simulate-service.ts, src/components/SimulationResults.tsx, src/components/SimulationHistory.tsx
+  - Verificar se TASK-015-DEV sera implementada antes do deploy
+
+context_for_next_agent: |
+  Todos os 72 testes passam com `npx vitest run`.
+  O script "test" foi adicionado ao package.json.
+  Dependencias de teste instaladas: @vitejs/plugin-react, jsdom, @testing-library/user-event, @testing-library/dom.
+  A logica de negocio (calculo de peso cubico, efetivo, validacoes) esta correta conforme os testes.
+  Nenhum bug aberto. Recomendacao: GO para code-review.

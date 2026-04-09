@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+!CLAUDE.md
+artifacts/
+prisma/dev.db
+.env*
+.idea
+.DS_Store
+.vercel
+coverage
+npm-debug.log*
+yarn-debug.log*
+dev.db

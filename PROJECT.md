@@ -1,13 +1,17 @@
-# Project: claude-agents
+# Project: Simulador de Frete
 
 ## Status
-- **Phase:** Discovery
+- **Phase:** QA Completo — aguardando Code Review
 - **Started:** 2026-04-09
 - **Last Updated:** 2026-04-09
 
 ## Tech Stack
-- **Detected:** None (empty project)
-- **To be defined during architecture phase**
+- **Framework:** Next.js 14+ (App Router) + TypeScript
+- **Styling:** Tailwind CSS v3
+- **ORM/DB:** Prisma v7 + SQLite (via better-sqlite3 adapter)
+- **Validation:** Zod
+- **Testing:** Vitest + Testing Library
+- **Infra:** Docker + Docker Compose
 
 ## Team (Squad Starter Agents)
 | Agent | Role | Status |
@@ -23,8 +27,7 @@
 ## Pipeline
 ```
 [Discovery] → [Architecture] → [Implementation] → [QA] → [Review]
- ^^^^^^^^
- current
+   Done           Done              Done           Done    Next
 ```
 
 ## Artifacts
@@ -36,4 +39,11 @@
 
 ## Notes
 - Project initialized on 2026-04-09 with Squad Starter
-- Awaiting discovery phase to define product vision and requirements
+- **18/18 tasks completed** (4 ARCH + 10 DEV + 4 QA)
+- All APIs working: /api/simulate, /api/carriers, /api/price-tables, /api/docs
+- Frontend: simulador, resultados, historico, comparacao, admin CRUD
+- Swagger UI disponivel em /docs
+- Docker + Docker Compose configurado
+- DB seeded: 3 carriers, 27 price tables, 135 weight ranges
+- Build: OK | Tests: 72 passed (4 suites) | Lint: OK
+- Next: Code Review phase

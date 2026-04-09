@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Carrier {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  code        String       @unique
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  priceTables PriceTable[]
+
+  @@index([code])
+  @@index([active])
+}
+
+model PriceTable {
+  id                  String        @id @default(cuid())
+  carrierId           String
+  carrier             Carrier       @relation(fields: [carrierId], references: [id], onDelete: Cascade)
+  cepOriginStart      String
+  cepOriginEnd        String
+  cepDestinationStart String
+  cepDestinationEnd   String
+  deadlineDays        Int
+  active              Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  weightRanges        WeightRange[]
+
+  @@index([carrierId])
+  @@index([cepOriginStart, cepOriginEnd])
+  @@index([cepDestinationStart, cepDestinationEnd])
+  @@index([active])
+}
+
+model WeightRange {
+  id           String     @id @default(cuid())
+  priceTableId String
+  priceTable   PriceTable @relation(fields: [priceTableId], references: [id], onDelete: Cascade)
+  minWeight    Float
+  maxWeight    Float
+  price        Float
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([priceTableId])
+  @@index([minWeight, maxWeight])
+}
